@@ -1,0 +1,27 @@
+<!-- LaunchDarkly Tracking code -->
+<script>
+var user = {
+  "firstName": "Bob",
+  "lastName": "Loblaw",
+  "key": "bob@example.com",
+  "custom": {
+    "groups": "beta_testers"
+  }
+};
+
+var div = document.createElement("div");
+document.body.appendChild(div);
+
+div.appendChild(document.createTextNode('Initializing...'));
+
+var ldclient = LDClient.initialize('58a7cb8740cda60920a14455', user);
+
+function render() {
+  var shouldShow = ldclient.variation("new-theme", true);
+  var label = (shouldShow ? "Showing" : "Not showing") + " your feature to " + user.key;
+  div.replaceChild(document.createTextNode(label), div.firstChild);
+}
+
+ldclient.on('ready', render);
+ldclient.on('change', render);
+</script>
