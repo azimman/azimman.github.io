@@ -13,7 +13,7 @@ layout: compress
     <meta name=author content="{{ site.name }}">
 
     {% seo %}
-    
+
     {% include favicon.html %}
 
     <link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
@@ -23,9 +23,35 @@ layout: compress
     {% capture scss_sheet %}{% include style.scss %}{% endcapture %}
     {{ scss_sheet | scssify }}
     </style>
-
+    <script src="https://app.launchdarkly.com/snippet/ldclient.min.js">
 </head>
 <body>
+    <script>
+    var user = {
+      "firstName": "Bob",
+      "lastName": "Loblaw",
+      "key": "bob@example.com",
+      "custom": {
+        "groups": "beta_testers"
+      }
+    };
+
+    var div = document.createElement("div");
+    document.body.appendChild(div);
+
+    div.appendChild(document.createTextNode('Initializing...'));
+
+    var ldclient = LDClient.initialize('58a7cb8740cda60920a14455', user);
+
+    function render() {
+      var shouldShow = ldclient.variation("new-theme", false);
+      var label = (shouldShow ? "Showing" : "Not showing") + " your feature to " + user.key;
+      div.replaceChild(document.createTextNode(label), div.firstChild);
+    }
+
+    ldclient.on('ready', render);
+    ldclient.on('change', render);
+    </script>
 
     <div class="wrapper-{% if site.width == "normal" %}normal{% elsif site.width == "large" %}large{% endif %}">
         {% if page.tag %}
