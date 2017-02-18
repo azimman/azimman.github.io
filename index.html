@@ -9,10 +9,36 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
     <title>azimman projects by azimman</title>
+    <script src="https://app.launchdarkly.com/snippet/ldclient.min.js">
   </head>
 
   <body>
+    <script>
+      var user = {
+        "firstName": "Bob",
+        "lastName": "Loblaw",
+        "key": "bob@example.com",
+        "custom": {
+          "groups": "beta_testers"
+        }
+      };
 
+      var div = document.createElement("div");
+      document.body.appendChild(div);
+
+      div.appendChild(document.createTextNode('Initializing...'));
+
+      var ldclient = LDClient.initialize('58a7cb8740cda60920a14455', user);
+
+      function render() {
+        var shouldShow = ldclient.variation("new-theme", false);
+        var label = (shouldShow ? "Showing" : "Not showing") + " your feature to " + user.key;
+        div.replaceChild(document.createTextNode(label), div.firstChild);
+      }
+
+      ldclient.on('ready', render);
+      ldclient.on('change', render);
+    </script>
     <header>
       <div class="container">
         <h1>azimman projects</h1>
@@ -36,6 +62,6 @@
       </section>
     </div>
 
-    
+
   </body>
 </html>
