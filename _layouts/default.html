@@ -23,6 +23,7 @@ layout: compress
     {% capture scss_sheet %}{% include style.scss %}{% endcapture %}
     {{ scss_sheet | scssify }}
     </style>
+
     <script type="text/javascript" src="https://app.launchdarkly.com/snippet/ldclient.min.js">
 </head>
 <body>
@@ -44,7 +45,7 @@ layout: compress
     var ldclient = LDClient.initialize('58a7cb8740cda60920a14455', user);
 
     function render() {
-      var shouldShow = ldclient.variation("new-theme", false);
+      var shouldShow = ldclient.variation("new-theme", true);
       var label = (shouldShow ? "Showing" : "Not showing") + " your feature to " + user.key;
       div.replaceChild(document.createTextNode(label), div.firstChild);
     }
